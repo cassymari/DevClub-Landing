@@ -1,0 +1,93 @@
+export const formations = [
+  {
+    id: 1,
+    category: "Desenvolvimento Web",
+    title: "DevClub Full Stack",
+    value: "full-stack",
+    shortTitle: "Full Stack",
+    description:
+      "Uma formação completa para aprender front-end, back-end, banco de dados e deploy construindo projetos reais.",
+    duration: "+400 horas",
+    level: "Do zero ao profissional",
+    technologies: [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "React",
+      "Node.js",
+      "PostgreSQL",
+    ],
+    featured: true,
+  },
+  {
+    id: 2,
+    category: "Desenvolvimento Front-end",
+    title: "Front End Club",
+    value: "front-end",
+    shortTitle: "Front-end",
+    description:
+      "Aprenda a desenvolver interfaces modernas, responsivas e preparadas para aplicações profissionais.",
+    duration: "+200 horas",
+    level: "Iniciante ao avançado",
+    technologies: [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "React",
+      "TypeScript",
+    ],
+  },
+  {
+    id: 3,
+    category: "Inteligência Artificial",
+    title: "Gestor de IA",
+    value: "ia",
+    shortTitle: "IA",
+    description:
+      "Aprenda a aplicar inteligência artificial em negócios, processos, produtos e automações do mundo real.",
+    duration: "+120 horas",
+    level: "Formação prática",
+    technologies: [
+      "IA",
+      "Prompts",
+      "Automação",
+      "Agentes",
+      "Integrações",
+    ],
+  },
+  {
+    id: 4,
+    category: "Dados e tecnologia",
+    title: "Data Club",
+    value: "data e club",
+    shortTitle: "Dados",
+    description:
+      "Transforme dados em decisões utilizando ferramentas, análises e fundamentos importantes para o mercado.",
+    duration: "+150 horas",
+    level: "Do básico ao profissional",
+    technologies: [
+      "Dados",
+      "SQL",
+      "Dashboards",
+      "Análise",
+      "Projetos",
+    ],
+  },
+  {
+    id: 5,
+    category: "Carreira e negócios",
+    title: "DevClub Elite",
+    value: "devclub elite",
+    shortTitle: "Elite",
+    description:
+      "Conteúdos exclusivos para acelerar sua carreira, posicionamento profissional e evolução no mercado.",
+    duration: "Conteúdo exclusivo",
+    level: "Aceleração profissional",
+    technologies: [
+      "Carreira",
+      "Networking",
+      "Negócios",
+      "Mentorias",
+    ],
+  },
+];
