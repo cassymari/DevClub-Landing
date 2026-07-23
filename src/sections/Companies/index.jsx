@@ -12,6 +12,8 @@ import {
 } from "react-icons/fi";
 
 import { scrollTo } from "../../hooks/useLenis";
+import { EnrollmentModal } from "../../ui/EnrollmentModal"
+import { useState } from "react";
 
 import {
   containerAnimation,
@@ -117,6 +119,7 @@ const skills = [
 
 export function Companies() {
   const duplicatedCompanies = [...companies, ...companies];
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   function handleGoToFormations(event) {
     event.preventDefault();
@@ -170,7 +173,7 @@ export function Companies() {
           </Title>
 
           <Description>
-           Nossa metodologia foi pensada para preparar você para processos seletivos e desafios encontrados em empresas como estas.
+            Nossa metodologia foi pensada para preparar você para processos seletivos e desafios encontrados em empresas como estas.
           </Description>
         </SectionHeader>
 
@@ -292,13 +295,16 @@ export function Companies() {
             </h3>
           </CtaContent>
 
-          <CtaButton
-            href="#formations"
-            onClick={handleGoToFormations}
+          <CtaButton type="button"
+            onClick={() => setIsModalOpen(true)}
           >
             Começar agora
             <FiArrowRight />
           </CtaButton>
+
+          <EnrollmentModal isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)} />
+
         </BottomCta>
       </CompaniesContainer>
     </CompaniesSection>

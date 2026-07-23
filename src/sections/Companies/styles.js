@@ -815,6 +815,7 @@ export const CtaButton = styled.a`
   z-index: 1;
 
   flex: 0 0 auto;
+  cursor: pointer;
 
   min-height: 54px;
   padding: 0 24px;

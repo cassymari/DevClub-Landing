@@ -9,6 +9,7 @@ import {
 } from "react-icons/fi";
 
 import { extraContents } from "./Contents.js";
+import { EnrollmentModal } from "../../ui/EnrollmentModal"
 
 import {
     ExtraSection,
@@ -64,6 +65,7 @@ export function ExtraContents() {
     const [cardsPerView, setCardsPerView] = useState(4);
     const [activeCategory, setActiveCategory] = useState("Todos");
     const [selectedContent, setSelectedContent] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const cardWidth = 250;
     const gap = 18;
@@ -533,8 +535,16 @@ export function ExtraContents() {
                                 ))}
                             </ModalList>
 
-                            <ModalAction>
-                                <span>Começar curso</span>
+                                                        <ModalAction
+                                type="button"
+                                onClick={() =>
+                                    setIsModalOpen(true)
+                                }
+                            >
+                                <span>
+                                    Começar Curso
+                                </span>
+
                                 <FiArrowRight />
                             </ModalAction>
                         </ModalBody>
@@ -542,8 +552,13 @@ export function ExtraContents() {
                 </ModalBackdrop>
             )}
 
+            <EnrollmentModal
+                isOpen={isModalOpen}
+                onClose={() =>
+                    setIsModalOpen(false)
+                }
+            />
         </ExtraSection>
-
-
     );
 }
+    
