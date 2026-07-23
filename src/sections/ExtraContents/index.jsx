@@ -8,7 +8,7 @@ import {
     FiCheck
 } from "react-icons/fi";
 
-import { extraContents } from "./contents";
+import { extraContents } from "./contents.js";
 
 import {
     ExtraSection,
