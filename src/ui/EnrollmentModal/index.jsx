@@ -10,6 +10,8 @@ import {
   FiX,
 } from "react-icons/fi";
 
+import { createEnrollment } from "../../services/api.js";
+
 import {
   ModalOverlay,
   ModalContainer,
@@ -48,24 +50,25 @@ export function EnrollmentModal({ isOpen, onClose }) {
   const [errors, setErrors] = useState({});
   const [isSending, setIsSending] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   useEffect(() => {
-    if (!isOpen) return;
+  if (!isOpen) return;
 
-    const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
+  function handleKeyDown(event) {
+    if (event.key === "Escape") {
+      onClose();
+    }
+  }
 
-    document.addEventListener("keydown", handleKeyDown);
-    document.body.style.overflow = "hidden";
+  document.addEventListener("keydown", handleKeyDown);
+  document.body.style.overflow = "hidden";
 
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
-    };
-  }, [isOpen, onClose]);
+  return () => {
+    document.removeEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "";
+  };
+}, [isOpen, onClose]);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -79,6 +82,8 @@ export function EnrollmentModal({ isOpen, onClose }) {
       ...previousErrors,
       [name]: "",
     }));
+
+    setSubmitError("");
   }
 
   function handleWhatsappChange(event) {
@@ -106,6 +111,8 @@ export function EnrollmentModal({ isOpen, onClose }) {
       ...previousErrors,
       whatsapp: "",
     }));
+
+    setSubmitError("");
   }
 
   function validateForm() {
@@ -148,26 +155,24 @@ export function EnrollmentModal({ isOpen, onClose }) {
     if (!isValid) return;
 
     setIsSending(true);
+    setSubmitError("");
 
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      await createEnrollment({
+        name: formData.name.trim(),
+        email: formData.email.trim().toLowerCase(),
+        phone: formData.whatsapp.replace(/\D/g, ""),
+      });
 
-    const currentLeads = JSON.parse(
-      localStorage.getItem("@devclub:leads") || "[]"
-    );
-
-    const newLead = {
-      id: crypto.randomUUID(),
-      ...formData,
-      createdAt: new Date().toISOString(),
-    };
-
-    localStorage.setItem(
-      "@devclub:leads",
-      JSON.stringify([...currentLeads, newLead])
-    );
-
-    setIsSending(false);
-    setIsSuccess(true);
+      setIsSuccess(true);
+    } catch (error) {
+      setSubmitError(
+        error.message ||
+          "Não foi possível realizar sua inscrição. Tente novamente."
+      );
+    } finally {
+      setIsSending(false);
+    }
   }
 
   function handleClose() {
@@ -176,6 +181,7 @@ export function EnrollmentModal({ isOpen, onClose }) {
     setTimeout(() => {
       setFormData(initialFormData);
       setErrors({});
+      setSubmitError("");
       setIsSending(false);
       setIsSuccess(false);
     }, 300);
@@ -264,6 +270,7 @@ export function EnrollmentModal({ isOpen, onClose }) {
                         value={formData.name}
                         onChange={handleChange}
                         autoComplete="name"
+                        disabled={isSending}
                       />
                     </InputWrapper>
 
@@ -288,6 +295,7 @@ export function EnrollmentModal({ isOpen, onClose }) {
                         value={formData.email}
                         onChange={handleChange}
                         autoComplete="email"
+                        disabled={isSending}
                       />
                     </InputWrapper>
 
@@ -312,6 +320,7 @@ export function EnrollmentModal({ isOpen, onClose }) {
                         value={formData.whatsapp}
                         onChange={handleWhatsappChange}
                         autoComplete="tel"
+                        disabled={isSending}
                       />
                     </InputWrapper>
 
@@ -335,17 +344,22 @@ export function EnrollmentModal({ isOpen, onClose }) {
                         name="formation"
                         value={formData.formation}
                         onChange={handleChange}
+                        disabled={isSending}
                       >
                         <option value="">Escolha uma formação</option>
+
                         <option value="full-stack">
                           Desenvolvimento Full Stack
                         </option>
+
                         <option value="front-end">
                           Desenvolvimento Front-end
                         </option>
+
                         <option value="back-end">
                           Desenvolvimento Back-end
                         </option>
+
                         <option value="ia">
                           Inteligência Artificial
                         </option>
@@ -356,6 +370,10 @@ export function EnrollmentModal({ isOpen, onClose }) {
                       <ErrorMessage>{errors.formation}</ErrorMessage>
                     )}
                   </InputGroup>
+
+                  {submitError && (
+                    <ErrorMessage role="alert">{submitError}</ErrorMessage>
+                  )}
 
                   <SubmitButton type="submit" disabled={isSending}>
                     {isSending ? (
@@ -413,8 +431,8 @@ export function EnrollmentModal({ isOpen, onClose }) {
                 <SuccessTitle>Dados recebidos!</SuccessTitle>
 
                 <SuccessDescription>
-                  Obrigado, {formData.name.split(" ")[0]}. Em breve nossa equipe
-                  entrará em contato com você.
+                  Obrigado, {formData.name.trim().split(" ")[0]}. Em breve nossa
+                  equipe entrará em contato com você.
                 </SuccessDescription>
 
                 <SuccessButton type="button" onClick={handleClose}>
